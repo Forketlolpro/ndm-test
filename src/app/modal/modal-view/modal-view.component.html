@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Параметры статического маршрута</h1>
+<div mat-dialog-content>
+  <form class="form" [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Адрес сети назначения</mat-label>
+      <input
+        required
+        matInput
+        formControlName="address"
+        minlength="7"
+        maxlength="15"
+        size="15"
+        pattern="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Маска подсети</mat-label>
+      <mat-select required formControlName="mask">
+        <mat-option *ngFor="let item of masks" [value]="item">
+          {{ item }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Адрес шлюза</mat-label>
+      <input
+        matInput
+        required
+        formControlName="gateway"
+        minlength="7"
+        maxlength="15"
+        size="15"
+        pattern="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Интерфейс</mat-label>
+      <mat-select formControlName="interface">
+        <mat-option *ngFor="let item of interfaces | keyvalue" [value]="item.value">
+          {{ item.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-error *ngIf="serverError">{{ serverError }}</mat-error>
+  </form>
+  <button *ngIf="isEditing" mat-button (click)="delete()">Удалить</button>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">Закрыть</button>
+  <button mat-button (click)="save()" [disabled]="form.invalid">
+    {{ isEditing ? 'Сохранить' : 'Добавить маршрут' }}
+  </button>
+</div>
